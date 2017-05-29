@@ -1,0 +1,12 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    App 1 - Page 1. ROUND {{subsession.round_number}}
+{% endblock %}
+
+{% block content %}
+    <p>Introduction here to APP 1</p>
+   {{form}}
+    {% next_button %}
+{% endblock %}

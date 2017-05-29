@@ -1,0 +1,41 @@
+<script>
+window.onload = function() {
+
+  sendmessage = function(what) {
+  var msg = {
+          participant_code: what.attr('id'),
+      };
+      if(wpsocket.readyState === wpsocket.OPEN){
+          wpsocket.send(JSON.stringify(msg));
+      }
+
+}
+  var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+  var wpsocket = new WebSocket(ws_scheme + '://' + window.location.host + "/session_monitor/{{session.code}}");
+
+  // Handle any errors that occur.
+  wpsocket.onerror = function(error) {
+    console.log('WebSocket Error: ' + error);
+  };
+
+  // Show a connected message when the WebSocket is opened.
+  wpsocket.onopen = function(event) {
+    console.log('connected to oTree');
+  };
+
+
+  // Handle messages sent by the server.
+  wpsocket.onmessage = function(event) {
+    var obj = jQuery.parseJSON(event.data);
+    console.log(obj.status)
+    if (obj.status=='ready') {$('.form').submit()}
+  };
+
+
+  // Show a disconnected message when the WebSocket is closed.
+  wpsocket.onclose = function(event) {
+    console.log('disconnected from oTree');
+  };
+};
+
+</script>
